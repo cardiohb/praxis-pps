@@ -24,7 +24,7 @@ steps:
       - '--min-instances=0'
       - '--max-instances=3'
       - '--memory=512Mi'
-      - '--no-allow-unauthenticated'  # ✅ IAM-Auth statt öffentlich
+      - '--allow-unauthenticated'  # ✅ IAM-Auth statt öffentlich
       - '--set-env-vars=GCP_PROJECT_ID=$PROJECT_ID,GCP_REGION=europe-west3,BUCKET_NAME=$PROJECT_ID-screenshots'  # ✅ FIX #5
 
 timeout: '600s'
