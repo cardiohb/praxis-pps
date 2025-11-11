@@ -4,12 +4,16 @@ options:
 steps:
   # Build
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pps-api:latest', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pps-api:latest', '-t', 'gcr.io/$PROJECT_ID/pps-api:$COMMIT_SHA', '.']
     dir: 'backend'
   
-  # Push
+  # Push latest
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/pps-api:latest']
+
+  # Push commit SHA
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/pps-api:$COMMIT_SHA']
   
   # Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -18,14 +22,14 @@ steps:
       - 'run'
       - 'deploy'
       - 'pps-api'
-      - '--image=gcr.io/$PROJECT_ID/pps-api:latest'
+      - '--image=gcr.io/$PROJECT_ID/pps-api:$COMMIT_SHA'
       - '--region=europe-west3'
       - '--service-account=pps-runtime-sa@$PROJECT_ID.iam.gserviceaccount.com'
       - '--min-instances=0'
       - '--max-instances=3'
       - '--memory=512Mi'
       - '--allow-unauthenticated'
-      - '--set-env-vars=GCP_PROJECT_ID=$PROJECT_ID,GCP_REGION=europe-west3,BUCKET_NAME=$PROJECT_ID-screenshots'  # ✅ FIX #5
+      - '--set-env-vars=GCP_PROJECT_ID=$PROJECT_ID,GCP_REGION=europe-west3,BUCKET_NAME=$PROJECT_ID-screenshots'
 
 timeout: '600s'
 serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/pps-cloudbuild-sa@$PROJECT_ID.iam.gserviceaccount.com'
