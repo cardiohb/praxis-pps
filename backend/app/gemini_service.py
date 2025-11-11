@@ -17,6 +17,7 @@ def structure_process(process_data: Process) -> list:
     """
     Nutzt Gemini 2.5 Flash, um Quick-Steps in detaillierte Schritte umzuwandeln.
     """
+    steps = '\n'.join([f"{i+1}. {s}" for i, s in enumerate(process_data.quickSteps)])
     prompt = f"""
 Du bist ein Prozessdokumentations-Experte.
 
@@ -24,7 +25,7 @@ PROZESS: {process_data.name}
 KATEGORIE: {process_data.category}
 
 GROBE SCHRITTE:
-{'\n'.join([f"{i+1}. {s}" for i, s in enumerate(process_data.quickSteps)])}
+{steps}
 
 AUFGABE: Wandle in detaillierte Schritte um.
 Für jeden Schritt: Titel, Beschreibung (200 Wörter), Klickpfad, Ergebnis, Dauer.
