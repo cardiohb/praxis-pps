@@ -1,0 +1,28 @@
+steps:
+  # Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/pps-api:latest', '.']
+    dir: 'backend'
+  
+  # Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/pps-api:latest']
+  
+  # Deploy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'pps-api'
+      - '--image=gcr.io/$PROJECT_ID/pps-api:latest'
+      - '--region=europe-west3'
+      - '--service-account=pps-runtime-sa@$PROJECT_ID.iam.gserviceaccount.com'
+      - '--min-instances=0'
+      - '--max-instances=3'
+      - '--memory=512Mi'
+      - '--no-allow-unauthenticated'  # ✅ IAM-Auth statt öffentlich
+      - '--set-env-vars=GCP_PROJECT_ID=$PROJECT_ID,GCP_REGION=europe-west3,BUCKET_NAME=$PROJECT_ID-screenshots'  # ✅ FIX #5
+
+timeout: '600s'
+serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/pps-cloudbuild-sa@$PROJECT_ID.iam.gserviceaccount.com'
