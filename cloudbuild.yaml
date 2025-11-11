@@ -1,3 +1,6 @@
+logsBucket: gs://praxis-pps-mvp-cb-logs/build-logs
+options:
+  logging: GCS_ONLY
 steps:
   # Build
   - name: 'gcr.io/cloud-builders/docker'
