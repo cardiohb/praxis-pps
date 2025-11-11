@@ -1,0 +1,22 @@
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+gunicorn==23.0.0
+
+# FIX #2: Neue Gemini SDK (statt google-cloud-aiplatform für Gemini)
+google-genai>=1.49.0
+
+# FIX #4: Flexible Pins für Stabilität (>= statt ==)
+# GCP SDKs (Firestore, Storage)
+google-cloud-firestore>=2.21.0
+google-cloud-storage>=2.19.0
+
+# Data Processing
+pydantic==2.10.0
+python-multipart==0.0.20
+
+# Word Export (PDF optional)
+python-docx==1.1.2
+
+# Utilities
+python-dateutil==2.9.0
