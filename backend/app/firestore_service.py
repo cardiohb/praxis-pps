@@ -1,6 +1,6 @@
 from google.cloud import firestore
 import datetime
-from typing import List, Dict, Any
+from typing import Optional, List, Dict, Any
 from app.models import ProcessCreate, ProcessInDB, DetailedStep, Process
 
 # Firestore-Client initialisieren
